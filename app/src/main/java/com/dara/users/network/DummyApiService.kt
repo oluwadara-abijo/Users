@@ -1,5 +1,6 @@
 package com.dara.users.network
 
+import com.dara.users.data.ApiResponse
 import retrofit2.http.GET
 
 /**
@@ -9,5 +10,5 @@ import retrofit2.http.GET
 interface DummyApiService {
 
     @GET("user")
-    suspend fun getUsers(): Any
+    suspend fun getUsers(): ApiResponse
 }

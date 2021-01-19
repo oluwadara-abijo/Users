@@ -13,7 +13,7 @@ class Repository {
 
     fun getUsers() = liveData(Dispatchers.IO) {
         try {
-            val registerResponse = service.getUsers()
+            val registerResponse = service.getUsers().data
             emit(registerResponse)
         } catch (e: java.lang.Exception) {
             emit(null)
