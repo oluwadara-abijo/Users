@@ -8,6 +8,6 @@ import retrofit2.http.GET
 
 interface DummyApiService {
 
-    @GET("users")
+    @GET("user")
     suspend fun getUsers(): Any
 }
