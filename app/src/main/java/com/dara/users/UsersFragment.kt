@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.dara.users.data.User
 import com.dara.users.databinding.FragmentUsersBinding
 
@@ -27,20 +29,23 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         getUsers()
-
     }
 
     private fun getUsers() {
         viewModel.users.observe(viewLifecycleOwner, {
             if (it != null) {
                 users = it
-                for (user in users) {
-                    binding.tvNames.append(user.lastName + "\n")
-                }
-
+                setupRecyclerView()
             }
         })
+    }
+
+    private fun setupRecyclerView(){
+        binding.rvUsers.apply {
+            layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+            adapter = UsersAdapter(users, requireContext())
+        }
+
     }
 }
