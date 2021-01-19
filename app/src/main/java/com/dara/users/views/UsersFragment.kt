@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,6 +13,7 @@ import com.dara.users.R
 import com.dara.users.adapter.UsersAdapter
 import com.dara.users.data.User
 import com.dara.users.databinding.FragmentUsersBinding
+import com.dara.users.utils.NetworkUtils
 import com.dara.users.viewmodel.MainViewModel
 
 /**
@@ -21,6 +23,7 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
     private var _binding: FragmentUsersBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainViewModel>()
+    private lateinit var networkUtils: NetworkUtils
     private var users = listOf<User>()
 
     override fun onCreateView(
@@ -32,23 +35,32 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        networkUtils = NetworkUtils(requireActivity(), binding.progressBar.root)
         getUsers()
     }
 
     private fun getUsers() {
-        viewModel.users.observe(viewLifecycleOwner, {
-            if (it != null) {
-                users = it
-                setupRecyclerView()
-            }
-        })
+        if (networkUtils.isNetworkAvailable()) {
+            networkUtils.showLoading()
+            viewModel.users.observe(viewLifecycleOwner, {
+                if (it != null) {
+                    users = it
+                    setupRecyclerView()
+                }
+                networkUtils.hideLoading()
+            })
+        } else {
+            Toast.makeText(
+                requireContext(), "Please check your internet connection", Toast.LENGTH_SHORT
+            ).show()
+        }
     }
 
-    private fun setupRecyclerView(){
+    private fun setupRecyclerView() {
         binding.rvUsers.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
             adapter = UsersAdapter(users, requireContext())
+            networkUtils.hideLoading()
         }
-
     }
 }
