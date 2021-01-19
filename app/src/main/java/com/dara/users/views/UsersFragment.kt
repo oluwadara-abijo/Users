@@ -1,4 +1,4 @@
-package com.dara.users
+package com.dara.users.views
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,8 +8,11 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.dara.users.R
+import com.dara.users.adapter.UsersAdapter
 import com.dara.users.data.User
 import com.dara.users.databinding.FragmentUsersBinding
+import com.dara.users.viewmodel.MainViewModel
 
 /**
  * A simple [Fragment] subclass.

@@ -1,4 +1,4 @@
-package com.dara.users
+package com.dara.users.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
