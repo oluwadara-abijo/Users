@@ -20,7 +20,6 @@
             android:layout_height="250dp"
             android:layout_margin="16dp"
             android:contentDescription="@string/profile_picture"
-            android:src="@mipmap/ic_launcher_round"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -39,7 +38,7 @@
             android:id="@+id/tv_title_label"
             style="@style/LabelTextStyle"
             android:layout_margin="16dp"
-            android:text="Title"
+            android:text="@string/title"
             app:layout_constraintEnd_toStartOf="@id/divider"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/img_profile_picture" />
@@ -47,7 +46,6 @@
         <TextView
             android:id="@+id/tv_title"
             style="@style/InfoTextStyle"
-            android:text="Mrs"
             app:layout_constraintStart_toStartOf="@id/divider"
             app:layout_constraintTop_toTopOf="@id/tv_title_label" />
 
@@ -55,14 +53,13 @@
             android:id="@+id/tv_first_name_label"
             style="@style/LabelTextStyle"
             android:layout_marginTop="8dp"
-            android:text="First Name"
+            android:text="@string/first_name"
             app:layout_constraintStart_toStartOf="@+id/tv_title_label"
             app:layout_constraintTop_toBottomOf="@id/tv_title_label" />
 
         <TextView
             android:id="@+id/tv_first_name"
             style="@style/InfoTextStyle"
-            android:text="Kamala"
             app:layout_constraintStart_toStartOf="@id/divider"
             app:layout_constraintTop_toTopOf="@id/tv_first_name_label" />
 
@@ -70,14 +67,13 @@
             android:id="@+id/tv_last_name_label"
             style="@style/LabelTextStyle"
             android:layout_marginTop="8dp"
-            android:text="Last Name"
+            android:text="@string/last_name"
             app:layout_constraintStart_toStartOf="@+id/tv_title_label"
             app:layout_constraintTop_toBottomOf="@id/tv_first_name_label" />
 
         <TextView
             android:id="@+id/tv_last_name"
             style="@style/InfoTextStyle"
-            android:text="Harris"
             app:layout_constraintStart_toStartOf="@id/divider"
             app:layout_constraintTop_toTopOf="@id/tv_last_name_label" />
 
@@ -85,14 +81,13 @@
             android:id="@+id/tv_email_label"
             style="@style/LabelTextStyle"
             android:layout_marginTop="8dp"
-            android:text="Email"
+            android:text="@string/email"
             app:layout_constraintStart_toStartOf="@+id/tv_title_label"
             app:layout_constraintTop_toBottomOf="@id/tv_last_name_label" />
 
         <TextView
             android:id="@+id/tv_email"
             style="@style/InfoTextStyle"
-            android:text="kamala.harris@email.com"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/divider"
             app:layout_constraintTop_toTopOf="@id/tv_email_label" />
@@ -101,14 +96,13 @@
             android:id="@+id/tv_phone_label"
             style="@style/LabelTextStyle"
             android:layout_marginTop="8dp"
-            android:text="Phone"
+            android:text="@string/phone"
             app:layout_constraintStart_toStartOf="@+id/tv_title_label"
             app:layout_constraintTop_toBottomOf="@id/tv_email" />
 
         <TextView
             android:id="@+id/tv_phone"
             style="@style/InfoTextStyle"
-            android:text="07060923191"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/divider"
             app:layout_constraintTop_toTopOf="@id/tv_phone_label" />
@@ -117,14 +111,13 @@
             android:id="@+id/tv_birthday_label"
             style="@style/LabelTextStyle"
             android:layout_marginTop="8dp"
-            android:text="Birthday"
+            android:text="@string/birthday"
             app:layout_constraintStart_toStartOf="@+id/tv_title_label"
             app:layout_constraintTop_toBottomOf="@id/tv_phone" />
 
         <TextView
             android:id="@+id/tv_birthday"
             style="@style/InfoTextStyle"
-            android:text="19-02-2021"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/divider"
             app:layout_constraintTop_toTopOf="@id/tv_birthday_label" />
@@ -134,7 +127,7 @@
             style="@style/LabelTextStyle"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="32dp"
-            android:text="Location"
+            android:text="@string/location"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@+id/tv_title_label"
             app:layout_constraintTop_toBottomOf="@id/tv_birthday"
@@ -143,7 +136,6 @@
         <TextView
             android:id="@+id/tv_location"
             style="@style/InfoTextStyle"
-            android:text="Austin, TX"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/divider"
             app:layout_constraintTop_toTopOf="@id/tv_location_label" />

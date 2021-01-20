@@ -1,4 +1,11 @@
 <resources>
     <string name="app_name">Users</string>
     <string name="profile_picture">Profile picture</string>
+    <string name="location">Location:</string>
+    <string name="birthday">Birthday:</string>
+    <string name="phone">Phone:</string>
+    <string name="email">Email:</string>
+    <string name="first_name">First name:</string>
+    <string name="last_name">Last name:</string>
+    <string name="title">Title:</string>
 </resources>
