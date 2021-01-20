@@ -139,6 +139,13 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="@id/divider"
             app:layout_constraintTop_toTopOf="@id/tv_location_label" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/group_labels"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tv_title_label, tv_phone_label,tv_birthday_label,tv_email_label,tv_first_name_label,tv_last_name_label,tv_location_label" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

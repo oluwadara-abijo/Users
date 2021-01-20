@@ -78,6 +78,7 @@ class UsersDetailFragment : Fragment(R.layout.fragment_users_details) {
 
     private fun populateUI(userDetails: UserDetails?) {
         if (userDetails != null) {
+            binding.groupLabels.visibility = View.VISIBLE
             binding.tvTitle.text = userDetails.title.capitalize(Locale.getDefault())
             binding.tvFirstName.text = userDetails.firstName
             binding.tvLastName.text = userDetails.lastName
