@@ -8,12 +8,21 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.dara.users.data.User
+import com.dara.users.data.fullName
 import com.dara.users.databinding.ListItemUserBinding
 
-class UsersAdapter(private val users: List<User>, private val context: Context) :
+class UsersAdapter(
+    private val users: List<User>,
+    private val context: Context,
+    private val listener: ItemClickListener
+) :
     RecyclerView.Adapter<UsersAdapter.UsersViewHolder>() {
 
     private lateinit var binding: ListItemUserBinding
+
+    interface ItemClickListener {
+        fun onItemClick(user: User)
+    }
 
     inner class UsersViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val textView = binding.tvName
@@ -21,6 +30,7 @@ class UsersAdapter(private val users: List<User>, private val context: Context) 
         fun bind(user: User) {
             textView.text = fullName(user)
             Glide.with(context).load(user.picture).transform(CircleCrop()).into(imageView)
+            itemView.setOnClickListener {listener.onItemClick(user) }
         }
     }
 
@@ -39,12 +49,4 @@ class UsersAdapter(private val users: List<User>, private val context: Context) 
         return users.size
     }
 
-    /**
-     *  Concatenates user's first and last name
-     *  @param user User whose full name is to be returned
-     *  @return User's full name
-     */
-    private fun fullName(user: User): String {
-        return "${user.firstName} ${user.lastName}"
-    }
 }
