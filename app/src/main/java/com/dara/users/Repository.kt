@@ -19,4 +19,13 @@ class Repository {
             emit(null)
         }
     }
+
+    fun getUserDetails(userId: String) = liveData(Dispatchers.IO) {
+        try {
+            val registerResponse = service.getUserDetails(userId).data
+            emit(registerResponse)
+        } catch (e: java.lang.Exception) {
+            emit(null)
+        }
+    }
 }
