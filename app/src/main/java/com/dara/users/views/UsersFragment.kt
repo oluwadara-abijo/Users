@@ -19,7 +19,7 @@ import com.dara.users.viewmodel.MainViewModel
 /**
  * A simple [Fragment] subclass.
  */
-class UsersFragment : Fragment(R.layout.fragment_users) {
+class UsersFragment : Fragment(R.layout.fragment_users), UsersAdapter.ItemClickListener {
     private var _binding: FragmentUsersBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainViewModel>()
@@ -59,8 +59,14 @@ class UsersFragment : Fragment(R.layout.fragment_users) {
     private fun setupRecyclerView() {
         binding.rvUsers.apply {
             layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
-            adapter = UsersAdapter(users, requireContext())
+            adapter = UsersAdapter(users, requireContext(), this@UsersFragment)
             networkUtils.hideLoading()
         }
+    }
+
+    override fun onItemClick(user: User) {
+        val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
+        fragmentTransaction?.replace(R.id.fragment_container,
+            UsersDetailFragment.newInstance(user))?.addToBackStack(null)?.commit()
     }
 }
