@@ -21,7 +21,3 @@ data class Location(
     val timezone: String,
     val country: String
 )
-
-fun fullName(userDetails: UserDetails): String {
-    return "${userDetails.firstName} ${userDetails.lastName}"
-}

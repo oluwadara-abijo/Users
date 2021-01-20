@@ -11,7 +11,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.dara.users.R
 import com.dara.users.data.UserDetails
-import com.dara.users.data.fullName
 import com.dara.users.databinding.FragmentUsersDetailsBinding
 import com.dara.users.utils.NetworkUtils
 import com.dara.users.viewmodel.MainViewModel
@@ -79,8 +78,12 @@ class UsersDetailFragment : Fragment(R.layout.fragment_users_details) {
     private fun populateUI(userDetails: UserDetails?) {
         if (userDetails != null) {
             binding.tvTitle.text = userDetails.title.capitalize(Locale.getDefault())
-            binding.tvName.text = fullName(userDetails)
+            binding.tvFirstName.text = userDetails.firstName
+            binding.tvLastName.text = userDetails.lastName
             binding.tvEmail.text = userDetails.email
+            binding.tvPhone.text = userDetails.phone
+            binding.tvBirthday.text = userDetails.dateOfBirth
+            binding.tvLocation.text = userDetails.location.country
             Glide.with(requireContext()).load(userDetails.picture).transform(CircleCrop())
                 .into(binding.imgProfilePicture)
         }
