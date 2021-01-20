@@ -67,6 +67,6 @@ class UsersFragment : Fragment(R.layout.fragment_users), UsersAdapter.ItemClickL
     override fun onItemClick(user: User) {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
         fragmentTransaction?.replace(R.id.fragment_container,
-            UsersDetailFragment.newInstance(user))?.addToBackStack(null)?.commit()
+            UsersDetailFragment.newInstance(user.id))?.addToBackStack(null)?.commit()
     }
 }

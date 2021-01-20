@@ -22,7 +22,7 @@ class Repository {
 
     fun getUserDetails(userId: String) = liveData(Dispatchers.IO) {
         try {
-            val registerResponse = service.getUserDetails(userId).data
+            val registerResponse = service.getUserDetails(userId)
             emit(registerResponse)
         } catch (e: java.lang.Exception) {
             emit(null)

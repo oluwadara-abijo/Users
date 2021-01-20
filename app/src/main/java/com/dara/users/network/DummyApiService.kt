@@ -13,8 +13,8 @@ import retrofit2.http.Path
 interface DummyApiService {
 
     @GET("user")
-    suspend fun getUsers(): ApiResponse<List<User>>
+    suspend fun getUsers(): ApiResponse
 
     @GET("user/{userId}")
-    suspend fun getUserDetails(@Path("userId") userId: String): ApiResponse<UserDetails>
+    suspend fun getUserDetails(@Path("userId") userId: String): UserDetails
 }

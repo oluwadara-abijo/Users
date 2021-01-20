@@ -4,35 +4,42 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.dara.users.R
-import com.dara.users.data.User
+import com.dara.users.data.UserDetails
 import com.dara.users.data.fullName
 import com.dara.users.databinding.FragmentUsersDetailsBinding
+import com.dara.users.utils.NetworkUtils
+import com.dara.users.viewmodel.MainViewModel
 import java.util.*
 
 class UsersDetailFragment : Fragment(R.layout.fragment_users_details) {
     private var _binding: FragmentUsersDetailsBinding? = null
+    private val viewModel by viewModels<MainViewModel>()
+    private lateinit var networkUtils: NetworkUtils
     private val binding get() = _binding!!
-    private var user: User? = null
+    private var userId: String? = null
+    private lateinit var userDetails: UserDetails
 
     companion object {
-        private const val USER = "user"
+        private const val USER_ID = "id"
 
         /**
          * Use this factory method to create a new instance of
          * this fragment using the provided parameters.
          *
-         * @param user Parameter 1.
+         * @param userId Parameter 1.
          * @return A new instance of fragment UsersFragment.
          */
         @JvmStatic
-        fun newInstance(user: User) =
+        fun newInstance(userId: String) =
             UsersDetailFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(USER, user)
+                    putString(USER_ID, userId)
                 }
             }
 
@@ -41,18 +48,40 @@ class UsersDetailFragment : Fragment(R.layout.fragment_users_details) {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        user = arguments?.getParcelable(USER)
+        userId = arguments?.getString(USER_ID)
         _binding = FragmentUsersDetailsBinding.inflate(inflater, container, false)
-        populateUI(user)
         return binding.root
     }
 
-    private fun populateUI(user: User?) {
-        if (user != null) {
-            binding.tvTitle.text = user.title.capitalize(Locale.getDefault())
-            binding.tvName.text = fullName(user)
-            binding.tvEmail.text = user.email
-            Glide.with(requireContext()).load(user.picture).transform(CircleCrop())
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        networkUtils = NetworkUtils(requireActivity(), binding.progressBar.root)
+        userId?.let { getUserDetails(it) }
+    }
+
+    private fun getUserDetails(userId: String) {
+        if (networkUtils.isNetworkAvailable()) {
+            networkUtils.showLoading()
+            viewModel.getUserDetails(userId).observe(viewLifecycleOwner, { res ->
+                if (res != null) {
+                    userDetails = res
+                    populateUI(userDetails)
+                }
+                networkUtils.hideLoading()
+            })
+        } else {
+            Toast.makeText(
+                requireContext(), "Please check your internet connection", Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
+    private fun populateUI(userDetails: UserDetails?) {
+        if (userDetails != null) {
+            binding.tvTitle.text = userDetails.title.capitalize(Locale.getDefault())
+            binding.tvName.text = fullName(userDetails)
+            binding.tvEmail.text = userDetails.email
+            Glide.with(requireContext()).load(userDetails.picture).transform(CircleCrop())
                 .into(binding.imgProfilePicture)
         }
 
