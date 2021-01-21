@@ -22,7 +22,7 @@ import com.dara.users.viewmodel.MainViewModel
 class UsersFragment : Fragment(R.layout.fragment_users), UsersAdapter.ItemClickListener {
     private var _binding: FragmentUsersBinding? = null
     private val binding get() = _binding!!
-    private val viewModel by viewModels<MainViewModel>()
+    private val viewModel: MainViewModel by viewModels()
     private lateinit var networkUtils: NetworkUtils
     private var users = listOf<User>()
 
@@ -45,9 +45,9 @@ class UsersFragment : Fragment(R.layout.fragment_users), UsersAdapter.ItemClickL
             viewModel.users.observe(viewLifecycleOwner, {
                 if (it != null) {
                     users = it
-                    setupRecyclerView()
+                    networkUtils.hideLoading()
                 }
-                networkUtils.hideLoading()
+                setupRecyclerView()
             })
         } else {
             Toast.makeText(
@@ -66,7 +66,9 @@ class UsersFragment : Fragment(R.layout.fragment_users), UsersAdapter.ItemClickL
 
     override fun onItemClick(user: User) {
         val fragmentTransaction = activity?.supportFragmentManager?.beginTransaction()
-        fragmentTransaction?.replace(R.id.fragment_container,
-            UsersDetailFragment.newInstance(user.id))?.addToBackStack(null)?.commit()
+        fragmentTransaction?.replace(
+            R.id.fragment_container,
+            UsersDetailFragment.newInstance(user.id)
+        )?.addToBackStack(null)?.commit()
     }
 }
