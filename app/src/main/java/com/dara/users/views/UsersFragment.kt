@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.dara.users.R
 import com.dara.users.adapter.UsersAdapter
+import com.dara.users.data.Status
 import com.dara.users.data.User
 import com.dara.users.databinding.FragmentUsersBinding
 import com.dara.users.utils.NetworkUtils
@@ -39,21 +40,48 @@ class UsersFragment : Fragment(R.layout.fragment_users), UsersAdapter.ItemClickL
         getUsers()
     }
 
+    // Get users from database or server if database is empty
     private fun getUsers() {
-        if (networkUtils.isNetworkAvailable()) {
-            networkUtils.showLoading()
-            viewModel.users.observe(viewLifecycleOwner, {
-                if (it != null) {
-                    users = it
-                    networkUtils.hideLoading()
+        //Get users from database
+        viewModel.users.apply {
+            when (this.status) {
+                Status.LOADING -> networkUtils.showLoading()
+                Status.SUCCESS -> {
+                    this.data?.observe(viewLifecycleOwner, {
+                        users = it
+                        setupRecyclerView()
+                        // The database has no user records; get data from the server
+                        if (users.isEmpty()) {
+                            // Check for internet connectivity
+                            if (networkUtils.isNetworkAvailable()) {
+                                viewModel.usersFromServer.observe(viewLifecycleOwner, { res ->
+                                    when (res.status) {
+                                        Status.LOADING -> networkUtils.showLoading()
+                                        Status.SUCCESS -> {
+                                            users = res.data!!
+                                            setupRecyclerView()
+                                        }
+                                        Status.ERROR -> Toast.makeText(
+                                            requireContext(), res.message, Toast.LENGTH_SHORT
+                                        ).show()
+
+                                    }
+                                })
+                            } else {
+                                Toast.makeText(
+                                    requireContext(), getString(R.string.internet_error),
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+                    })
                 }
-                setupRecyclerView()
-            })
-        } else {
-            Toast.makeText(
-                requireContext(), "Please check your internet connection", Toast.LENGTH_SHORT
-            ).show()
+                Status.ERROR -> {
+                    Toast.makeText(requireContext(), this.message, Toast.LENGTH_LONG).show()
+                }
+            }
         }
+
     }
 
     private fun setupRecyclerView() {

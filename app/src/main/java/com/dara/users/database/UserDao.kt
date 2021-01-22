@@ -1,5 +1,6 @@
 package com.dara.users.database
 
+import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -12,11 +13,11 @@ import com.dara.users.data.User
 @Dao
 interface UserDao {
 
-    // Gets list of all users to display in the list
+    // Get list of all users to display in the list
     @Query("SELECT * FROM user")
-    fun getUsers(): List<User>
+    fun getUsers(): LiveData<List<User>>?
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insertUser(user: User)
+    suspend fun addUser(user: User)
 
 }

@@ -1,7 +1,7 @@
 package com.dara.users
 
 import androidx.lifecycle.liveData
-import com.dara.users.data.User
+import com.dara.users.data.Resource
 import com.dara.users.database.UserDao
 import com.dara.users.network.DummyApiClient
 import kotlinx.coroutines.Dispatchers
@@ -13,16 +13,20 @@ import kotlinx.coroutines.Dispatchers
 class Repository(private val userDao: UserDao) {
     private val service = DummyApiClient.getService()
 
-    fun getUsers() = liveData(Dispatchers.IO) {
-        if (getUsersOffline().value?.isNotEmpty() == true) {
-            emit(getUsersOffline().value)
-        } else {
-            try {
-                val registerResponse = service.getUsers().data
-                emit(registerResponse)
-            } catch (e: java.lang.Exception) {
-                emit(null)
+    // Get users from database
+    val usersInDatabase = Resource.success(userDao.getUsers())
+
+    // Get users from server
+    val usersFromServer = liveData(Dispatchers.IO) {
+        try {
+            emit(Resource.loading(null))
+            val response = service.getUsers().data
+            for (user in response) {
+                userDao.addUser(user)
             }
+            emit(Resource.success(response))
+        } catch (e: java.lang.Exception) {
+            emit(Resource.error(e.localizedMessage, null))
         }
     }
 
@@ -35,12 +39,4 @@ class Repository(private val userDao: UserDao) {
         }
     }
 
-    fun insertUser(user: User) = liveData(Dispatchers.IO) {
-        emit(userDao.insertUser(user))
-    }
-
-    // Gets users from database
-    private fun getUsersOffline() = liveData(Dispatchers.IO) {
-        emit(userDao.getUsers())
-    }
 }
