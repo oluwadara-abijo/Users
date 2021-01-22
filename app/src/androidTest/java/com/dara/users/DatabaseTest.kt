@@ -16,35 +16,32 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import java.io.IOException
 
+@RunWith(AndroidJUnit4::class)
 class DatabaseTest {
+    private lateinit var userDao: UserDao
+    private lateinit var db: UsersDatabase
 
-    @RunWith(AndroidJUnit4::class)
-    class SimpleEntityReadWriteTest {
-        private lateinit var userDao: UserDao
-        private lateinit var db: UsersDatabase
+    @Before
+    fun createDb() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        db = Room.inMemoryDatabaseBuilder(
+            context, UsersDatabase::class.java
+        ).build()
+        userDao = db.usersDao()
+    }
 
-        @Before
-        fun createDb() {
-            val context = ApplicationProvider.getApplicationContext<Context>()
-            db = Room.inMemoryDatabaseBuilder(
-                context, UsersDatabase::class.java
-            ).build()
-            userDao = db.usersDao()
-        }
+    @After
+    @Throws(IOException::class)
+    fun closeDb() {
+        db.close()
+    }
 
-        @After
-        @Throws(IOException::class)
-        fun closeDb() {
-            db.close()
-        }
-
-        @Test
-        @Throws(Exception::class)
-        fun writeUserAndReadInList() {
-            val user: User = TestUtil.createUser()
-            userDao.addUser(user)
-            val byName = userDao.getUserById("123")
-            assertThat(byName, equalTo(user))
-        }
+    @Test
+    @Throws(Exception::class)
+    fun writeUserAndReadInList() {
+        val user: User = TestUtil.createUser()
+        userDao.addUser(user)
+        val byName = userDao.getUserById("123")
+        assertThat(byName, equalTo(user))
     }
 }
