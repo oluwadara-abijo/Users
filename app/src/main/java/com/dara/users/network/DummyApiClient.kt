@@ -1,7 +1,6 @@
 package com.dara.users.network
 
 import okhttp3.OkHttpClient
-import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
@@ -14,10 +13,6 @@ object DummyApiClient {
 
     private const val BASE_URL = "https://dummyapi.io/data/api/"
 
-    // An HttpLoggingInterceptor object for logging purposes
-    private val loggingInterceptor =
-        HttpLoggingInterceptor().apply { level = HttpLoggingInterceptor.Level.BODY }
-
     // An OkHttp object for sending and receiving requests
     private val okHttpClient = OkHttpClient.Builder().apply {
         addInterceptor {
@@ -27,7 +22,6 @@ object DummyApiClient {
                     .build()
             it.proceed(request)
         }
-        addInterceptor(loggingInterceptor)
         connectTimeout(2, TimeUnit.MINUTES)
         readTimeout(2, TimeUnit.MINUTES)
         writeTimeout(1, TimeUnit.MINUTES)

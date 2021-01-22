@@ -62,9 +62,6 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
 
-    //Okhttp logging
-    implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
-
     //Kotlin coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlin_coroutines_version"
 
