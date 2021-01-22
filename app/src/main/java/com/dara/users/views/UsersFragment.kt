@@ -56,13 +56,15 @@ class UsersFragment : Fragment(R.layout.fragment_users), UsersAdapter.ItemClickL
                         when (res.status) {
                             Status.LOADING -> networkUtils.showLoading()
                             Status.SUCCESS -> {
+                                networkUtils.hideLoading()
                                 users = res.data!!
                                 setupRecyclerView()
                             }
-                            Status.ERROR -> Toast.makeText(
-                                requireContext(), res.message, Toast.LENGTH_LONG
-                            ).show()
-
+                            Status.ERROR -> {
+                                networkUtils.hideLoading()
+                                Toast.makeText(requireContext(), res.message, Toast.LENGTH_LONG)
+                                    .show()
+                            }
                         }
                     })
                 } else {

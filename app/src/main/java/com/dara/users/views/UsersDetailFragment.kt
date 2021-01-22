@@ -60,23 +60,6 @@ class UsersDetailFragment : Fragment(R.layout.fragment_users_details) {
         userId?.let { getUserDetails(it) }
     }
 
-//    private fun getUserDetails(userId: String) {
-//        if (networkUtils.isNetworkAvailable()) {
-//            networkUtils.showLoading()
-//            viewModel.getUserDetails(userId).observe(viewLifecycleOwner, { res ->
-//                if (res != null) {
-//                    userDetails = res
-//                    populateUI(userDetails)
-//                }
-//                networkUtils.hideLoading()
-//            })
-//        } else {
-//            Toast.makeText(
-//                requireContext(), "Please check your internet connection", Toast.LENGTH_SHORT
-//            ).show()
-//        }
-//    }
-
     /**
      * Get user's details from database or server if database is empty
      */
@@ -95,12 +78,15 @@ class UsersDetailFragment : Fragment(R.layout.fragment_users_details) {
                         when (res.status) {
                             Status.LOADING -> networkUtils.showLoading()
                             Status.SUCCESS -> {
+                                networkUtils.hideLoading()
                                 userDetails = res.data!!
                                 populateUI(userDetails)
                             }
-                            Status.ERROR -> Toast.makeText(
-                                requireContext(), res.message, Toast.LENGTH_LONG
-                            ).show()
+                            Status.ERROR -> {
+                                networkUtils.hideLoading()
+                                Toast.makeText(requireContext(), res.message, Toast.LENGTH_LONG)
+                                    .show()
+                            }
 
                         }
                     })
