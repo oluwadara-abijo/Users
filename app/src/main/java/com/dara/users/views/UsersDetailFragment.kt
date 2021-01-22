@@ -13,9 +13,9 @@ import com.dara.users.R
 import com.dara.users.data.Status
 import com.dara.users.data.UserDetails
 import com.dara.users.databinding.FragmentUsersDetailsBinding
+import com.dara.users.utils.DateUtils
 import com.dara.users.utils.NetworkUtils
 import com.dara.users.viewmodel.MainViewModel
-import java.text.SimpleDateFormat
 import java.util.*
 
 class UsersDetailFragment : Fragment(R.layout.fragment_users_details) {
@@ -108,19 +108,12 @@ class UsersDetailFragment : Fragment(R.layout.fragment_users_details) {
             binding.tvLastName.text = userDetails.lastName
             binding.tvEmail.text = userDetails.email
             binding.tvPhone.text = userDetails.phone
-            binding.tvBirthday.text = formatDate(userDetails.dateOfBirth)
+            binding.tvBirthday.text = DateUtils().formatDate(userDetails.dateOfBirth)
             binding.tvLocation.text = cityAndCountry(userDetails)
             Glide.with(requireContext()).load(userDetails.picture).transform(CircleCrop())
                 .into(binding.imgProfilePicture)
         }
 
-    }
-
-    // Formats user's date of birth in readable form
-    private fun formatDate(timeString: String): String {
-        val parser = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-        val formatter = SimpleDateFormat("dd MMM yyyy", Locale.getDefault())
-        return formatter.format(parser.parse(timeString))
     }
 
     private fun cityAndCountry(userDetails: UserDetails): String {
