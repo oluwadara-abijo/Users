@@ -1,7 +1,6 @@
 package com.dara.users.network
 
 import com.dara.users.data.ApiResponse
-import com.dara.users.data.User
 import com.dara.users.data.UserDetails
 import retrofit2.http.GET
 import retrofit2.http.Path

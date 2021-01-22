@@ -1,15 +1,18 @@
 package com.dara.users.data
 
 import android.os.Parcelable
-import kotlinx.android.parcel.Parcelize
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import kotlinx.parcelize.Parcelize
 
 /**
  * Data class representing a User object from the server
  */
 
 @Parcelize
+@Entity
 data class User(
-    val id: String,
+    @PrimaryKey val id: String,
     val lastName: String,
     val firstName: String,
     val email: String,
