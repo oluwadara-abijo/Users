@@ -14,7 +14,7 @@ class Repository(private val userDao: UserDao) {
     private val service = DummyApiClient.getService()
 
     // Get users from database
-    val usersInDatabase = Resource.success(userDao.getUsers())
+    val usersInDatabase = userDao.getUsers()
 
     // Get users from server
     val usersFromServer = liveData(Dispatchers.IO) {
@@ -30,12 +30,18 @@ class Repository(private val userDao: UserDao) {
         }
     }
 
-    fun getUserDetails(userId: String) = liveData(Dispatchers.IO) {
+    // Get user's details from database
+    fun userDetailsInDatabase(userId: String) = userDao.getUserDetails(userId)
+
+    // Get user details from server
+    fun usersDetailsFromServer(userId: String) = liveData(Dispatchers.IO) {
         try {
-            val registerResponse = service.getUserDetails(userId)
-            emit(registerResponse)
+            emit(Resource.loading(null))
+            val response = service.getUserDetails(userId)
+            userDao.addUserDetails(response)
+            emit(Resource.success(response))
         } catch (e: java.lang.Exception) {
-            emit(null)
+            emit(Resource.error(e.localizedMessage, null))
         }
     }
 

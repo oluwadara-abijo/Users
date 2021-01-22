@@ -1,11 +1,17 @@
 package com.dara.users.data
 
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.PrimaryKey
+
+@Entity
 data class UserDetails(
-    val id: String,
+    @PrimaryKey val id: String,
     val phone: String,
     val lastName: String,
     val firstName: String,
-    val location: Location,
+    @Embedded val location: Location,
     val email: String,
     val gender: String,
     val title: String,

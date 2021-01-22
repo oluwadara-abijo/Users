@@ -40,47 +40,38 @@ class UsersFragment : Fragment(R.layout.fragment_users), UsersAdapter.ItemClickL
         getUsers()
     }
 
-    // Get users from database or server if database is empty
+    /**
+     * Get users from database or server if database is empty
+     */
     private fun getUsers() {
         //Get users from database
-        viewModel.users.apply {
-            when (this.status) {
-                Status.LOADING -> networkUtils.showLoading()
-                Status.SUCCESS -> {
-                    this.data?.observe(viewLifecycleOwner, {
-                        users = it
-                        setupRecyclerView()
-                        // The database has no user records; get data from the server
-                        if (users.isEmpty()) {
-                            // Check for internet connectivity
-                            if (networkUtils.isNetworkAvailable()) {
-                                viewModel.usersFromServer.observe(viewLifecycleOwner, { res ->
-                                    when (res.status) {
-                                        Status.LOADING -> networkUtils.showLoading()
-                                        Status.SUCCESS -> {
-                                            users = res.data!!
-                                            setupRecyclerView()
-                                        }
-                                        Status.ERROR -> Toast.makeText(
-                                            requireContext(), res.message, Toast.LENGTH_SHORT
-                                        ).show()
-
-                                    }
-                                })
-                            } else {
-                                Toast.makeText(
-                                    requireContext(), getString(R.string.internet_error),
-                                    Toast.LENGTH_SHORT
-                                ).show()
+        viewModel.users?.observe(viewLifecycleOwner, {
+            users = it
+            setupRecyclerView()
+            // The database has no user records; get data from the server
+            if (users.isEmpty()) {
+                // Check for internet connectivity
+                if (networkUtils.isNetworkAvailable()) {
+                    viewModel.usersFromServer.observe(viewLifecycleOwner, { res ->
+                        when (res.status) {
+                            Status.LOADING -> networkUtils.showLoading()
+                            Status.SUCCESS -> {
+                                users = res.data!!
+                                setupRecyclerView()
                             }
+                            Status.ERROR -> Toast.makeText(
+                                requireContext(), res.message, Toast.LENGTH_LONG
+                            ).show()
+
                         }
                     })
-                }
-                Status.ERROR -> {
-                    Toast.makeText(requireContext(), this.message, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(
+                        requireContext(), getString(R.string.internet_error), Toast.LENGTH_LONG
+                    ).show()
                 }
             }
-        }
+        })
 
     }
 

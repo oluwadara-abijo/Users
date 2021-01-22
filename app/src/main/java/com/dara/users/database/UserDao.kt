@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.dara.users.data.User
+import com.dara.users.data.UserDetails
 
 /**
  * Provides methods to interact with data in the database
@@ -19,5 +20,12 @@ interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun addUser(user: User)
+
+    // Get details of selected user
+    @Query("SELECT * FROM UserDetails WHERE id = :userId")
+    fun getUserDetails(userId: String): LiveData<UserDetails>?
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    suspend fun addUserDetails(userDetails: UserDetails)
 
 }

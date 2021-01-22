@@ -12,7 +12,7 @@ import com.dara.users.database.UsersDatabase
 class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository: Repository
-    val users: Resource<LiveData<List<User>>>
+    val users: LiveData<List<User>>?
     val usersFromServer: LiveData<Resource<List<User>>>
 
     init {
@@ -22,6 +22,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
         usersFromServer = repository.usersFromServer
     }
 
-    fun getUserDetails(userId: String): LiveData<UserDetails?> = repository.getUserDetails(userId)
+    fun getUserDetailsFromDatabase(id: String) = repository.userDetailsInDatabase(id)
+
+    fun getUserDetailsFromServer(id: String) = repository.usersDetailsFromServer(id)
 
 }

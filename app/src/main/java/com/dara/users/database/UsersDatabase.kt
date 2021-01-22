@@ -1,12 +1,11 @@
 package com.dara.users.database
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
 import com.dara.users.data.User
+import com.dara.users.data.UserDetails
 
-@Database(entities = [User::class], version = 1, exportSchema = false)
+@Database(entities = [User::class, UserDetails::class], version = 1, exportSchema = false)
 abstract class UsersDatabase : RoomDatabase() {
 
     abstract fun usersDao(): UserDao
